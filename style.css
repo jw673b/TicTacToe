@@ -1,0 +1,96 @@
+body {
+    display: grid;
+    grid-template-areas:
+    "header"
+    "body";
+    margin: 0px 0px 0px 0px;
+}
+#header {
+    display: grid;
+    margin-top: 0px;
+    width: 100%;
+    height: 90px;
+    text-align: center;
+    border-bottom: solid;
+    grid-template-areas: 
+    "p1 head head p2";
+    grid-area: header;
+}
+#heading {
+    grid-area: head;
+}
+#player1 {
+    grid-area: p1;
+}
+#player2 {
+    grid-area: p2;
+}
+
+#player1, #player2 {
+    margin-left: auto;
+    margin-right: auto;
+    width: 150px;
+    align-items: center;
+    display: grid;
+    grid-template-areas:
+        "player player"
+        "wins num";
+}
+.player {
+    grid-area: player;
+    margin: auto;
+}
+.wins {
+    grid-area: wins;
+
+}
+.numWins {
+    grid-area: num;
+}
+#main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    grid-area: body;
+}
+/* Gameboard styling */
+#gameboard {
+    padding: 50px;
+    display:grid;
+    grid-template-areas: 
+    "grid1 grid2 grid3"
+    "grid4 grid5 grid6"
+    "grid7 grid8 grid9"
+    ;
+    width: 60vh;
+    height: 60vh;
+}
+#grid4, #grid6 {
+    border-top-style: solid;
+    border-bottom-style: solid;
+    border-width: 15px;
+}
+#grid5 {
+    border-style: solid;
+    border-width: 15px;
+}
+#grid2, #grid8 {
+    border-right-style: solid;
+    border-left-style: solid;
+    border-width: 15px;
+}
+#gameboard > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 54px;
+    font-family: sans-serif;
+    font-weight: bolder;
+    width: 20vh;
+    height: 20vh;
+}
+#gameboard > div:hover {
+    background-color: seashell;
+}
+/* end Gameboard styling */
