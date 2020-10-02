@@ -134,3 +134,7 @@ const startGame = () => {
 
 startGame();
 setPlayers();
+
+const ai = () => {
+    
+}
