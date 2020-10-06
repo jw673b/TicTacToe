@@ -25,6 +25,34 @@
         <div id="main">
             <div id="gameboard"></div>
         </div>
+        <div id="modalBase" class="modal"></div>
+        <div id="modalContents" class="modal">
+            <form>
+                <h1 id="formHeading">Choose Game Mode</h1>
+                <div id="mode">
+                    <input id="one" type="radio" name="gM" value="one" checked>
+                    <label for="one">Single Player</label>
+                    <input id="two" type="radio" name="gM" value="two">
+                    <label for="two">Two Player</label>
+                </div>
+                <div id="difficulty">
+                    <input id="easy" type="radio" name="dif" value="easy" checked>
+                    <label for="easy">regular</label>
+                    <input id="hard" type="radio" name="dif" value="hard">
+                    <label for="hard">impossible</label>
+                </div>
+                <div id="submit"><p>Submit</p></div>
+            </form>
+        </div>
+        <div id="modal2">
+            <h1 id="alert">Please enter player name</h1>
+            <p id="pnum"></p>
+            <input id="pname"type="text">
+            <div id="confirm"><p>Confirm</p></div>
+        </div>
+        <div id="openModal">
+            <p>Change Game Mode</p>
+        </div>
         <script type="text/javascript" src="script.js"></script>
     </body>
 </html>

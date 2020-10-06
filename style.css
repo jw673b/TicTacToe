@@ -12,8 +12,10 @@ body {
     height: 90px;
     text-align: center;
     border-bottom: solid;
-    grid-template-areas: 
-    "p1 head head p2";
+    grid-template-areas:
+    "p1 head head p2"
+    "p1 modal modal p2"
+    ;
     grid-area: header;
 }
 #heading {
@@ -29,12 +31,14 @@ body {
 #player1, #player2 {
     margin-left: auto;
     margin-right: auto;
+    height: 60px;
     width: 150px;
     align-items: center;
     display: grid;
     grid-template-areas:
         "player player"
         "wins num";
+    font-size: 14px;
 }
 .player {
     grid-area: player;
@@ -94,3 +98,113 @@ body {
     background-color: seashell;
 }
 /* end Gameboard styling */
+
+/* Modal styling */
+#modalBase {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    opacity: 50%;
+    background-color: slategray;
+}
+#modalContents {
+    position: fixed;
+    justify-content: center;
+    height: 70vh;
+    width: 70vh;
+    min-height: 400px;
+    min-width: 400px;
+    border-style: solid;
+    border-color: black;
+    border-radius: 15px;
+    background-color: white;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    margin: 10px;
+}
+.modal {
+    display: flex;
+}
+#modalContents > * > * {
+    margin-top: 10px;
+}
+#submit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-style: solid;
+    border-radius: 30px;
+    border-width: 1px;
+    width: 60px;
+    height: 20px;
+    margin-left: 50%;
+    transform: translateX(-50%);
+}
+#confirm {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-style: solid;
+    border-radius: 30px;
+    border-width: 1px;
+    width: 60px;
+    height: 20px;
+    margin-left: 50%;
+    transform: translateX(-50%);
+    grid-area: confirm;
+}
+#openModal {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-style: solid;
+    border-radius: 30px;
+    border-width: 1px;
+    width: 130px;
+    height: 20px;
+    font-size: 12px;
+    bottom: 20px;
+    right: 20px;
+}
+#modal2 {
+    display: none;
+    position: fixed;
+    grid-template-areas:
+    "alert alert alert alert alert alert alert alert alert pnum"
+    "txt txt txt txt txt txt txt . confirm confirm"
+    ;
+    height: 100px;
+    width: 500px;
+    border-style: solid;
+    border-color: black;
+    border-radius: 15px;
+    background-color: white;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: left;
+    margin: 10px;
+}
+#pnum {
+    grid-area: pnum;
+    margin: 15px;
+    font-size: 20px;
+}
+#modal2 > * {
+    margin-left: 30px;
+}
+#pname {
+    grid-area: txt;
+    border-radius: 10px;
+    border-width: 2px;
+    width: 350px;
+    height: 20px;
+    margin-bottom: 10px;
+}
+#alert {
+    grid-area: alert;
+    font-size: 22px; 
+}
