@@ -1,26 +1,3 @@
-
-// var p1 = player(prompt("Player 1 enter your name"));
-// p1.turn = true;
-// var p2 = player(prompt("Player 2 enter your name"));
-// p2.XorO = "O";
-// const setPlayers = () => {
-//     let players = [];
-//     players.push(p1,p2);
-//     players.forEach((player,index) => {
-//         const pDOM = document.querySelector(`#player${index+1}`);
-//         console.log(pDOM);
-//         let childDOMs = pDOM.childNodes;
-//             childDOMs = Array.from(childDOMs)
-//         const nameDOM = childDOMs[1];
-//             nameDOM.textContent += player.name;
-//         const winsDOM = childDOMs[5];
-//             winsDOM.textContent = player.wins;
-//     })
-//     setWins();
-// }
-
-
-
 // the orignal function tying all the game logic together
 // const startGame = () => {
 //     const gameLogic = () => {
@@ -45,11 +22,12 @@
 //     }
 // }
 const player = (name) => {
-    let turn = false;
+    let turn = true;
     let XorO = "X";
     let winCount = 0;
     return {name,XorO,turn,winCount}
 };
+const gb = document.querySelector("#gameboard");
 let p1;
 let p2;
 
@@ -73,14 +51,18 @@ const helper = new function() {// game helper functions
     this.win = function() {
         let p1Wins = document.querySelector("#p1Wins");
         let p2Wins = document.querySelector("#p2Wins");
-        p1Wins.textContent = p1.winCount;
-        p2Wins.textContent = p2.winCount;
+        if (p2) {
+            p1Wins.textContent = p1.winCount;
+            p2Wins.textContent = p2.winCount;
+        };
     };
 };
 const logic = new function() {//game logic functions
-    this.win = function(inputs) {
+    this.win = function() {
+        let curP = p1.turn ? p2.name:p1.name;
+        let inputs = document.querySelectorAll(`.${curP}`);
+        inputs = Array.from(inputs);
         inputs = inputs.map(val => parseInt(val.id[4]));
-        console.log(inputs);
         let isWin = false;
         function checkInputs(num,increment) {
             let returnVal = (inputs.indexOf(num + increment) !== -1 && inputs.indexOf(num + 2*increment) !== -1) ? true:false;
@@ -121,17 +103,20 @@ const logic = new function() {//game logic functions
                             isWin = checkInputs(input,1);
                         } else {};
                         break;
-                }
-            }
-        return isWin;
-        }
+                };
+            };
+        };
+        if (isWin === true) {
+            p1.name === curP ? p1.winCount++ : p2.winCount++;
+            helper.win();
+            board();
+        };
     };
 };
 const AI = new function() {
 
 };
 const setup = new function() {
-    const gb = document.querySelector("#gameboard");
     const submit = document.querySelector("#submit");
     const confirm = document.querySelector("#confirm");
     const input = document.querySelector("#pname");
@@ -140,18 +125,6 @@ const setup = new function() {
     let dif;
     let p = 1;
     pnum.textContent = `P${p}`;
-    const board = (function() {
-        while (gb.firstChild) {
-            gb.removeChild(gb.firstChild);
-        }
-        for (i=1;i<=9;i++) {
-            const gs = document.createElement("div");
-            gs.id=`grid${i}`;
-            gs.addEventListener("click", helper.move);
-            gs.addEventListener("click", logic.win);
-            gb.appendChild(gs);
-        }
-    })();
     const gameMode = function() {
         const easy = document.querySelector("#easy");
         const hard = document.querySelector("#hard");
@@ -161,6 +134,7 @@ const setup = new function() {
         dif = easy.checked ? "easy":"hard";
         if (mode === 1) {
             p2 = player("computer");
+            p2.XorO = "O";
         };
     };
     const modal = (function() {
@@ -182,7 +156,7 @@ const setup = new function() {
                 case 2:
                     typeof p2 === "object" ?
                     p2 = p2:p2 = player(pname);
-                    p2.XorO = "X";
+                    p2.XorO = "O";
                     break;
             };
             if (mode === 2 && p === 1) {
@@ -192,9 +166,21 @@ const setup = new function() {
             } else {
                 modal2.style.display = "none";
                 modalBase.style.display = "none";
-            }
-
+            };
+            helper.win();
         });
     })();
 };
-
+function board() {
+    while (gb.firstChild) {
+        gb.removeChild(gb.firstChild);
+    }
+    for (i=1;i<=9;i++) {
+        const gs = document.createElement("div");
+        gs.id=`grid${i}`;
+        gs.addEventListener("click", helper.move);
+        gs.addEventListener("click", logic.win);
+        gb.appendChild(gs);
+    }
+};
+board();
