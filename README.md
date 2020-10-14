@@ -31,3 +31,21 @@ function gameHelpers {}
 function AI {}
 - AI with random selection
 - AI that is unbeatable
+
+
+tic tac toe game
+- game setup (initial and reset)
+    - DOM items
+    - listeners
+
+- helper code
+    - code for listener items
+    - code to update the header with score and other auxillary items
+
+- game logic
+    - moving from player to player
+    - determining if the case is a win
+
+- AI function
+    - random moves
+    - impossible to beat

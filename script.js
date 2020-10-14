@@ -1,26 +1,3 @@
-// the orignal function tying all the game logic together
-// const startGame = () => {
-//     const gameLogic = () => {
-//         setTimeout(() => {
-//             let currentPlayer;
-//             let currentPlayerName;
-//             p1.turn === false ? currentPlayerName = p1.name:currentPlayerName = p2.name;
-//             p1.turn === false ? currentPlayer = p1:currentPlayer = p2;
-//             let playerInputs = document.querySelectorAll(`.${currentPlayerName}`);
-//             playerInputs = Array.from(playerInputs);
-//             console.log({currentPlayer});
-//             if (checkWin(playerInputs)) {
-//                 currentPlayer.winCount += 1;
-//                 alert(`${currentPlayer.name} wins!`);
-//                 setWins();
-//                 setBoard();
-//             } else if (playerInputs.length === 5) {
-//                 alert(`The game is a draw!`)
-//                 setBoard();
-//             }
-//         }, 1000);
-//     }
-// }
 const player = (name) => {
     let turn = true;
     let XorO = "X";
@@ -30,6 +7,8 @@ const player = (name) => {
 const gb = document.querySelector("#gameboard");
 let p1;
 let p2;
+let mode;
+let dif;
 
 const helper = new function() {// game helper functions
     this.move = function(e) {
@@ -107,9 +86,11 @@ const logic = new function() {//game logic functions
             };
         };
         if (isWin === true) {
-            p1.name === curP ? p1.winCount++ : p2.winCount++;
-            helper.win();
-            board();
+            setTimeout(() => {
+                p1.name === curP ? p1.winCount++ : p2.winCount++;
+                helper.win();
+                board();
+            }, 1000);
         };
     };
 };
@@ -121,53 +102,77 @@ const setup = new function() {
     const confirm = document.querySelector("#confirm");
     const input = document.querySelector("#pname");
     const pnum = document.querySelector("#pnum");
-    let mode;
-    let dif;
+    const modalBase = document.querySelector("#modalBase");
+    const modal = document.querySelector("#modalContents");
+    const modal2 = document.querySelector("#modal2");
+    const player1 = document.querySelector("#p1name");
+    const player2 = document.querySelector("#p2name");
+    const openModal = document.querySelector("#openModal");
     let p = 1;
     pnum.textContent = `P${p}`;
-    const gameMode = function() {
-        const easy = document.querySelector("#easy");
-        const hard = document.querySelector("#hard");
-        const one = document.querySelector("#one");
-        const two = document.querySelector("#two");
-        mode = two.checked ? 2:1;
-        dif = easy.checked ? "easy":"hard";
-        if (mode === 1) {
-            p2 = player("computer");
-            p2.XorO = "O";
-        };
-    };
-    const modal = (function() {
-        const modalBase = document.querySelector("#modalBase");
-        const modal = document.querySelector("#modalContents");
-        const modal2 = document.querySelector("#modal2");
+    this.submitbtn = (function() {
         submit.addEventListener("click",() => {//code for the submit button
             modal.style.display = "none";
+            modalBase.style.display = "flex";
             modal2.style.display = "grid";
-            gameMode();
+            const reg = document.querySelector("#regular");
+            const imp = document.querySelector("#impossible");
+            const oneP = document.querySelector("#1p");
+            const twoP = document.querySelector("#2p");
+            mode = two.checked ? 2:1;
+            dif = easy.checked ? "easy":"hard";
+            if (mode === 1) {
+                p2 = player("computer");
+                p2.XorO = "O";
+                player2.textContent +="Computer";
+            };
         });
+    })();
+    this.players = (function() {
         confirm.addEventListener("click",() => {//code for the confirm button
             let pname = input.value;
-            switch(p) {
-                case 1:
-                    typeof p1 === "object" ?
-                    p1 = p1:p1 = player(pname);
-                    break;
-                case 2:
-                    typeof p2 === "object" ?
-                    p2 = p2:p2 = player(pname);
-                    p2.XorO = "O";
-                    break;
-            };
-            if (mode === 2 && p === 1) {
-                p++;
-                pnum.textContent = `P${p}`;
-                input.value = "";
+            if (pname.length < 2) {
+                alert("Player name should be 2 characters or longer");
+            } else if (pname.match(/\W|_/g)) {
+                alert("Player name should not contain special characters");
             } else {
-                modal2.style.display = "none";
-                modalBase.style.display = "none";
+                switch(p) {
+                    case 1:
+                        typeof p1 === "object" ?
+                        p1 = p1:p1 = player(pname);
+                        player1.textContent +=p1.name;
+                        break;
+                    case 2:
+                        typeof p2 === "object" ?
+                        p2 = p2:p2 = player(pname);
+                        p2.XorO = "O";
+                        const player2 = document.querySelector("#p2name");
+                        player2.textContent +=p2.name;
+                        break;
+                };
+                if (mode === 2 && p === 1) {
+                    p++;
+                    pnum.textContent = `P${p}`;
+                    input.value = "";
+                } else {
+                    modal2.style.display = "none";
+                    modalBase.style.display = "none";
+                };
+                helper.win();
             };
-            helper.win();
+        });
+    })();
+    this.resetbtn = (function(){
+        openModal.addEventListener("click",() => {
+            board();
+            p1 = "";
+            p2 = "";
+            input.value = "";
+            player1.textContent = "P1: ";
+            player2.textContent = "P2: ";
+            modal.style.display = "flex";
+            modalBase.style.display = "flex";
+            setup();
         });
     })();
 };
@@ -183,4 +188,5 @@ function board() {
         gb.appendChild(gs);
     }
 };
+setup();
 board();

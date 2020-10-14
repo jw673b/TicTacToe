@@ -100,14 +100,14 @@ body {
 /* end Gameboard styling */
 
 /* Modal styling */
-#modalBase {
+#baseModal {
     position: fixed;
     height: 100%;
     width: 100%;
     opacity: 50%;
     background-color: slategray;
 }
-#modalContents {
+#contentModal {
     position: fixed;
     justify-content: center;
     height: 70vh;
@@ -127,7 +127,7 @@ body {
 .modal {
     display: flex;
 }
-#modalContents > * > * {
+#contentModal > * > * {
     margin-top: 10px;
 }
 #submit {
@@ -155,7 +155,7 @@ body {
     transform: translateX(-50%);
     grid-area: confirm;
 }
-#openModal {
+#reset {
     position: fixed;
     display: flex;
     align-items: center;
@@ -169,7 +169,7 @@ body {
     bottom: 20px;
     right: 20px;
 }
-#modal2 {
+#pNameModal {
     display: none;
     position: fixed;
     grid-template-areas:
@@ -188,15 +188,15 @@ body {
     text-align: left;
     margin: 10px;
 }
-#pnum {
+#pNum {
     grid-area: pnum;
     margin: 15px;
     font-size: 20px;
 }
-#modal2 > * {
+#pNameModal > * {
     margin-left: 30px;
 }
-#pname {
+#pName {
     grid-area: txt;
     border-radius: 10px;
     border-width: 2px;
@@ -207,4 +207,9 @@ body {
 #alert {
     grid-area: alert;
     font-size: 22px; 
+}
+.button:hover {
+    transform:scale(1.05);
+    background-color: whitesmoke;
+    border-color: goldenrod;
 }

@@ -12,12 +12,12 @@
                 <h1>Tic-Tac-Toe</h1>
             </div>
             <div id="player1">
-                <h2 class="player">P1: </h2>
+                <h2 class="player" id="p1Name">P1: </h2>
                 <h2 class="wins">Wins: </h2>
                 <h2 id="p1Wins" class="numWins"></h2>
             </div>
             <div id="player2">
-                <h2 class="player">P2: </h2>
+                <h2 class="player" id="p2Name">P2: </h2>
                 <h2 class="wins">Wins: </h2>
                 <h2 id="p2Wins" class="numWins"></h2>
         </div>
@@ -25,34 +25,34 @@
         <div id="main">
             <div id="gameboard"></div>
         </div>
-        <div id="modalBase" class="modal"></div>
-        <div id="modalContents" class="modal">
+        <div id="baseModal" class="modal"></div>
+        <div id="contentModal" class="modal">
             <form>
                 <h1 id="formHeading">Choose Game Mode</h1>
                 <div id="mode">
-                    <input id="one" type="radio" name="gM" value="one" checked>
-                    <label for="one">Single Player</label>
-                    <input id="two" type="radio" name="gM" value="two">
-                    <label for="two">Two Player</label>
+                    <input id="oneP" type="radio" name="gM" value="oneP" checked>
+                    <label for="oneP">Single Player</label>
+                    <input id="twoP" type="radio" name="gM" value="twoP">
+                    <label for="twoP">Two Player</label>
                 </div>
                 <div id="difficulty">
-                    <input id="easy" type="radio" name="dif" value="easy" checked>
-                    <label for="easy">regular</label>
-                    <input id="hard" type="radio" name="dif" value="hard">
-                    <label for="hard">impossible</label>
+                    <input id="regular" type="radio" name="dif" value="regular" checked>
+                    <label for="regular">regular</label>
+                    <input id="impossible" type="radio" name="dif" value="impossible">
+                    <label for="impossible">impossible</label>
                 </div>
-                <div id="submit"><p>Submit</p></div>
+                <div id="submit" class="button"><p>Submit</p></div>
             </form>
         </div>
-        <div id="modal2">
+        <div id="pNameModal">
             <h1 id="alert">Please enter player name</h1>
-            <p id="pnum"></p>
-            <input id="pname"type="text">
-            <div id="confirm"><p>Confirm</p></div>
+            <p id="pNum"></p>
+            <input id="pName" type="text">
+            <div id="confirm" class="button"><p>Confirm</p></div>
         </div>
-        <div id="openModal">
+        <div id="reset" class="button">
             <p>Change Game Mode</p>
         </div>
-        <script type="text/javascript" src="script.js"></script>
+        <script type="text/javascript" src="script_2.js"></script>
     </body>
 </html>
