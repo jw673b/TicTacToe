@@ -124,6 +124,19 @@ body {
     text-align: center;
     margin: 10px;
 }
+#endModal {
+    display:none;
+    position:fixed;
+    align-items: center;
+    justify-content: center;
+    height: 10vh;
+    width: 100%;
+    border-style: solid;
+    border-color: black;
+    background-color: white;
+    top: 0%;
+    text-align: center;
+}
 .modal {
     display: flex;
 }
@@ -155,6 +168,19 @@ body {
     transform: translateX(-50%);
     grid-area: confirm;
 }
+#continue {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-style: solid;
+    border-radius: 30px;
+    border-width: 1px;
+    width: 80px;
+    height: 20px;
+    top: 20px;
+    right: 20px;
+}
 #reset {
     position: fixed;
     display: flex;
@@ -163,9 +189,10 @@ body {
     border-style: solid;
     border-radius: 30px;
     border-width: 1px;
-    width: 130px;
-    height: 20px;
-    font-size: 12px;
+    width: 140px;
+    height: 25px;
+    font-size: 15px;
+    margin-left: 50%;
     bottom: 20px;
     right: 20px;
 }

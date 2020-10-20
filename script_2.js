@@ -1,11 +1,14 @@
 const player = (name) => {
-    let turn = true;
     let XorO = "X";
     let winCount = 0;
-    return {name,XorO,turn,winCount}
+    return {name,XorO,winCount}
 };
 let p1;
 let p2;
+let mode;
+let dif;
+let turn = "p1";
+const gb = document.querySelector("#gameboard");
 // ---------- global variables defined above -----------
 const logic = new function() {//game logic to run on each click
     let isWin = false;
@@ -17,25 +20,8 @@ const logic = new function() {//game logic to run on each click
             p2Wins.textContent = p2.winCount;
         };
     };
-    this.move = function(e) {
-        if (e.target.innerText === "") {
-            const targ = document.querySelector(`#${e.target.id}`);
-            if (p1.turn) {
-                targ.className = p1.name;
-                e.target.innerText = p1.XorO;
-                p1.turn = false;
-                p2.turn = true;
-            } else if (p2.turn) {
-                targ.className = p2.name;
-                e.target.innerText = p2.XorO;
-                e.target.class = p2.name;
-                p2.turn = false;
-                p1.turn = true;
-            };
-        }; 
-    };
     this.win = function() {
-        let curP = p1.turn ? p2.name:p1.name;
+        let curP = turn === "p1" ? p2.name:p1.name;
         let inputs = document.querySelectorAll(`.${curP}`);
             inputs = Array.from(inputs);
             inputs = inputs.map(val => parseInt(val.id[4]));
@@ -81,22 +67,89 @@ const logic = new function() {//game logic to run on each click
                 };
             };
         };
+        const endMsg = document.querySelector("#endMessage");
         if (isWin) {
-            setTimeout(() => {
                 p1.name === curP ? p1.winCount++ : p2.winCount++;
                 logic.setWin();
-                aux.board();
+                endMsg.textContent = `${curP} Wins!`;
+                aux.endGame();
                 isWin = false;
-            }, 1000);
         } else if (!isWin && inputs.length === 5) {
-            setTimeout(() => {
-                aux.board();
-            }, 1000);
+                endMsg.textContent = "The game is a tie!";
+                aux.endGame();
+        } else{};
+    };
+    const ai = new function() {    
+        this.availSpaces = function() {
+            let avail = [];
+            let gbChildren = document.querySelector("#gameboard").childNodes;
+            gbChildren = Array.from(gbChildren);
+            gbChildren.forEach(child => {
+                if (child.className === "avail") {
+                    avail.push(child.id);
+                };
+            });
+            return avail;
+        };      
+        this.rand = function() {
+            const avail = ai.availSpaces();
+            const random = avail[Math.floor(Math.random()*avail.length)];
+            const targ = document.querySelector(`#${random}`);
+            if (random) {
+                targ.className = p2.name;
+                targ.innerText = p2.XorO;
+            };
         };
+        this.imp = function() {
+            const avail = ai.availSpaces();
+        };
+    };
+    this.twoPGame = function(e) {
+        if (mode === 2) {
+            if (e.target.innerText === "") {
+                const targ = document.querySelector(`#${e.target.id}`);
+                if (turn === "p1") {
+                    targ.className = p1.name;
+                    e.target.innerText = p1.XorO;
+                    turn = "p2";
+                } else if (turn === "p2") {
+                    targ.className = p2.name;
+                    e.target.innerText = p2.XorO;
+                    turn = "p1";
+                };
+                logic.win();
+            } else {};
+        } else {};
+    };
+    this.onePGame = function(e) {
+        if (mode === 1) {
+            console.log(turn);
+            if (e.target.innerText === "") {
+                const targ = document.querySelector(`#${e.target.id}`);
+                let cont = true;
+                if (turn === "p1") {
+                    const curWins = document.querySelector("#p1Wins");
+                    const score = curWins.textContent;
+                    targ.className = p1.name;
+                    e.target.innerText = p1.XorO;
+                    turn = "p2";
+                    logic.win();
+                    if (curWins.textContent !== score) {
+                        cont = false;
+                    } else {};
+                } if (turn === "p2" && cont) {
+                    dif === "reg" ? ai.rand():ai.imp();
+                    turn = "p1";
+                    logic.win();
+                };
+            } else {};
+        } else{};
     };
 };
 const aux = new function() {//setup and reset the board + DOM items
 //constants / variables
+    const endMod = document.querySelector("#endModal"); //orig display:none
+    const continueBtn = document.querySelector("#continue"); //orig display:none
     const submitBtn = document.querySelector("#submit");
     const confirmBtn = document.querySelector("#confirm");
     const resetBtn = document.querySelector("#reset");
@@ -104,13 +157,12 @@ const aux = new function() {//setup and reset the board + DOM items
     const contMod = document.querySelector("#contentModal"); //orig display:flex
     const nameMod = document.querySelector("#pNameModal"); //orig display:none
     const pNum = document.querySelector("#pNum");
-    let mode;
-    let dif;
     let pCount = 1; //counter to assign player names
     const listeners = (function() {
         submitBtn.addEventListener("click", submit);
         confirmBtn.addEventListener("click", confirm);
-        resetBtn.addEventListener("click", reset);       
+        resetBtn.addEventListener("click", reset);    
+        continueBtn.addEventListener("click", end);   
     })();
 //setup functions
     function submit() { //sets mode and difficulty if applicable
@@ -161,7 +213,6 @@ const aux = new function() {//setup and reset the board + DOM items
         if (typeof p2 === "object") {
             p2Name.textContent = `P2: ${p2.name}`;
             p2.XorO = "O";
-            p2.turn = false;
             aux.board();
             logic.setWin();
         } else {};
@@ -177,21 +228,26 @@ const aux = new function() {//setup and reset the board + DOM items
         baseMod.style.display = "flex";
         contMod.style.display = "flex";
     }
+    this.endGame = function() {
+        baseMod.style.display = "flex";
+        endMod.style.display = "flex";
+    }
+    function end() {
+        baseMod.style.display = "none";
+        endMod.style.display = "none";
+        aux.board();
+    };
     this.board = function() {
-        const gb = document.querySelector("#gameboard");
         while (gb.firstChild) {
             gb.removeChild(gb.firstChild);
         };
         for (i=1;i<=9;i++) {
             const gs = document.createElement("div");
             gs.id=`grid${i}`;
-            gs.addEventListener("click", logic.move);
-            gs.addEventListener("click", logic.win);
-            gs.addEventListener("click", logic.tie);
+            mode === 1 ? gs.addEventListener("click", logic.onePGame):
+                gs.addEventListener("click", logic.twoPGame);
+            gs.className = "avail";
             gb.appendChild(gs);
         };
     };
-};
-const ai = function() {
-
 };
